@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+[user]
+	email = dev@pearidge.com
+	name = Pea Ridge Dev Team
