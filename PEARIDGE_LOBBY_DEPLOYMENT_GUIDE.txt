@@ -1,0 +1,413 @@
+===================================================================================
+                   PEA RIDGE - LOBBY COMPUTER DEPLOYMENT GUIDE
+                     Multi-Zone RFID Tracking Application
+===================================================================================
+
+SYSTEM OVERVIEW:
+- Connects to 8 RFID zones across 2 Raspberry Pi units
+- Tracks dog movement through grooming workflow
+- Color-coded zone visualization
+- Customer queue management
+- Complete zone history logging
+- MySQL database integration
+
+===================================================================================
+STEP 1: PREREQUISITES
+===================================================================================
+
+Windows Requirements:
+  ✓ Windows 10 or Windows 11
+  ✓ .NET Framework 4.7.2 or higher (usually pre-installed)
+  ✓ MySQL Server 8.0 (or compatible version)
+
+Network Requirements:
+  ✓ Same network as Raspberry Pi units
+  ✓ pr-rpi001 accessible at 192.168.1.201
+  ✓ pr-rpi002 accessible at 192.168.1.202
+  ✓ Ports 5001-5008 open for TCP connections
+
+===================================================================================
+STEP 2: INSTALL MYSQL SERVER
+===================================================================================
+
+Download & Install:
+  1. Download MySQL Community Server from:
+     https://dev.mysql.com/downloads/mysql/
+
+  2. During installation:
+     - Set root password: Sc0ttyM3lt0n!
+     - Enable MySQL as Windows Service
+     - Start service automatically
+
+  3. Verify installation:
+     Open Command Prompt and run:
+     mysql -u root -p
+     (Enter password when prompted)
+
+===================================================================================
+STEP 3: CREATE DATABASE
+===================================================================================
+
+Run these SQL commands in MySQL:
+
+-- Create database
+CREATE DATABASE IF NOT EXISTS rfid_database;
+USE rfid_database;
+
+-- Create customer tags table
+CREATE TABLE IF NOT EXISTS rfid_tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_id VARCHAR(255) UNIQUE NOT NULL,
+    customer_name VARCHAR(255),
+    dogs_name VARCHAR(255),
+    dogs_breed VARCHAR(255),
+    vehicle_make_color TEXT,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_seen TIMESTAMP NULL
+);
+
+-- Create zone tracking table
+CREATE TABLE IF NOT EXISTS tag_reads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_id VARCHAR(255) NOT NULL,
+    zone_number INT NOT NULL,
+    zone_name VARCHAR(100) NOT NULL,
+    pi_id VARCHAR(50) NOT NULL,
+    pi_ip VARCHAR(15) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_tag_id (tag_id),
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_zone (zone_number)
+);
+
+-- Optional: Create view for latest locations
+CREATE OR REPLACE VIEW latest_tag_locations AS
+SELECT 
+    t1.tag_id,
+    t1.zone_number,
+    t1.zone_name,
+    t1.pi_id,
+    t1.timestamp,
+    rt.customer_name,
+    rt.dogs_name,
+    rt.dogs_breed
+FROM tag_reads t1
+INNER JOIN (
+    SELECT tag_id, MAX(timestamp) as max_timestamp
+    FROM tag_reads
+    GROUP BY tag_id
+) t2 ON t1.tag_id = t2.tag_id AND t1.timestamp = t2.max_timestamp
+LEFT JOIN rfid_tags rt ON t1.tag_id = rt.tag_id
+ORDER BY t1.timestamp DESC;
+
+-- Insert sample data (OPTIONAL - remove before production)
+INSERT IGNORE INTO rfid_tags 
+(tag_id, customer_name, dogs_name, dogs_breed, vehicle_make_color, notes)
+VALUES 
+('E20034120000001D00000000', 'Scott Melton', 'Buddy', 'Golden Retriever', 'Toyota Black', 'VIP Customer'),
+('E20034120000001D00000001', 'Whitney Kinnaman', 'Luna', 'Border Collie', 'Ford PU White', 'Premium Member'),
+('E20034120000001D00000002', 'Mike Davis', 'Max', 'German Shepherd', 'Dodge Ram Blue', 'Regular Customer');
+
+===================================================================================
+STEP 4: INSTALL VISUAL STUDIO (for building the application)
+===================================================================================
+
+Option A: Visual Studio 2022 Community (Free)
+  1. Download from: https://visualstudio.microsoft.com/downloads/
+  2. During installation, select:
+     ✓ .NET desktop development workload
+     ✓ C# language support
+
+Option B: Build Tools for Visual Studio (Lighter option)
+  1. Download from: https://visualstudio.microsoft.com/downloads/
+  2. Select "Tools for Visual Studio" → "Build Tools"
+  3. Install .NET desktop build tools
+
+===================================================================================
+STEP 5: INSTALL REQUIRED NUGET PACKAGES
+===================================================================================
+
+In Visual Studio, open Package Manager Console (Tools → NuGet Package Manager)
+Run these commands:
+
+Install-Package MySql.Data -Version 8.0.33
+Install-Package Newtonsoft.Json -Version 13.0.3
+
+OR use NuGet Package Manager UI:
+  1. Right-click project → Manage NuGet Packages
+  2. Search and install:
+     - MySql.Data (by Oracle)
+     - Newtonsoft.Json (by James Newton-King)
+
+===================================================================================
+STEP 6: CREATE VISUAL STUDIO PROJECT
+===================================================================================
+
+1. Open Visual Studio
+2. Create New Project
+3. Select "Windows Forms App (.NET Framework)"
+4. Name: RFIDLookupApp
+5. Framework: .NET Framework 4.7.2 or higher
+
+Project Structure:
+  RFIDLookupApp/
+  ├── MainForm.cs              (Use PeaRidge_MultiZone_MainForm.cs)
+  ├── CustomerQueueForm.cs     (Use PeaRidge_CustomerQueueForm.cs)
+  ├── SupportingForms.cs       (Use PeaRidge_SupportingForms.cs)
+  └── App.config
+
+===================================================================================
+STEP 7: ADD SOURCE CODE FILES
+===================================================================================
+
+Copy the provided source files:
+
+1. Create new file: MainForm.cs
+   → Copy contents from PeaRidge_MultiZone_MainForm.cs
+
+2. Add new form: CustomerQueueForm.cs
+   → Copy contents from PeaRidge_CustomerQueueForm.cs
+
+3. Add new file: SupportingForms.cs
+   → Copy contents from PeaRidge_SupportingForms.cs
+
+Note: All forms are partial classes in the same namespace (RFIDLookupApp)
+
+===================================================================================
+STEP 8: VERIFY DATABASE CONNECTION STRING
+===================================================================================
+
+In MainForm.cs, verify this line matches your MySQL setup:
+
+private const string connectionString = 
+    "Server=localhost;Database=rfid_database;Uid=root;Pwd=Sc0ttyM3lt0n!;";
+
+If you used a different password, update it here.
+
+===================================================================================
+STEP 9: BUILD AND TEST
+===================================================================================
+
+Build the Application:
+  1. Build → Build Solution (or press Ctrl+Shift+B)
+  2. Fix any errors (usually missing NuGet packages)
+  3. Verify build succeeds
+
+Test Database Connection:
+  1. Run the application (F5 or Debug → Start Debugging)
+  2. Click "View Database" button
+  3. Should see the 3 sample customers (if you added them)
+
+Test TCP Connection:
+  1. Ensure pr-rpi001 and pr-rpi002 are running RFID services
+  2. Click "Connect All Zones" button
+  3. Should see all 8 zones turn green with "Connected ✓"
+
+===================================================================================
+STEP 10: ZONE CONFIGURATION REFERENCE
+===================================================================================
+
+Zone Mapping (automatically configured in code):
+
+Raspberry Pi #1 (192.168.1.201) - Grooming Operations:
+  Zone 1: Bathing           → Port 5001 → Color: Light Blue
+  Zone 2: Drying            → Port 5002 → Color: Light Coral
+  Zone 3: Grooming Room 1   → Port 5003 → Color: Light Green
+  Zone 4: Grooming Room 2   → Port 5004 → Color: Light Yellow
+
+Raspberry Pi #2 (192.168.1.202) - Customer & Holding:
+  Zone 5: Entryway          → Port 5005 → Color: Plum
+  Zone 6: Waiting Kennels   → Port 5006 → Color: Peach Puff
+  Zone 7: Play Yard         → Port 5007 → Color: Light Cyan
+  Zone 8: Pickup Kennel     → Port 5008 → Color: Light Salmon
+
+===================================================================================
+STEP 11: USING THE APPLICATION
+===================================================================================
+
+Main Window Features:
+  ✓ Connection status for all 8 zones
+  ✓ Real-time tag read counts per zone
+  ✓ System statistics (connected zones, total tags, active customers)
+  ✓ One-click connect/disconnect all zones
+
+Customer Queue Window:
+  ✓ Shows all detected customers with current zone
+  ✓ Color-coded by zone (matches zone colors)
+  ✓ Zone movement history count
+  ✓ Double-click customer to remove from queue
+  ✓ Right-click for zone history details
+  ✓ Auto-updates when customer moves between zones
+
+Zone History Window:
+  ✓ Complete log of all tag reads
+  ✓ Filter by zone, date range
+  ✓ Export to CSV for analysis
+  ✓ Color-coded by zone
+
+Tag Popup (Auto-appears):
+  ✓ Shows customer info when tag detected
+  ✓ Displays current zone with color
+  ✓ Auto-closes after 5 seconds
+  ✓ Plays audible "ding" sound
+
+===================================================================================
+STEP 12: DEPLOYMENT TO LOBBY COMPUTER
+===================================================================================
+
+Method 1: Copy Built Application
+  1. Build in "Release" mode (not Debug)
+  2. Navigate to: bin\Release\
+  3. Copy entire folder to lobby computer
+  4. Install .NET Framework 4.7.2+ on lobby computer
+  5. Install MySQL Server on lobby computer
+  6. Run RFIDLookupApp.exe
+
+Method 2: Install Visual Studio on Lobby Computer
+  1. Install Visual Studio on lobby computer
+  2. Copy project files
+  3. Build and run from Visual Studio
+
+Recommended: Method 1 for production use
+
+===================================================================================
+STEP 13: AUTO-START CONFIGURATION (OPTIONAL)
+===================================================================================
+
+To start application automatically when Windows boots:
+
+1. Create shortcut to RFIDLookupApp.exe
+2. Press Win+R, type: shell:startup
+3. Copy shortcut to Startup folder
+4. Application will auto-start on login
+
+Advanced: Run as Windows Service
+  - Use NSSM (Non-Sucking Service Manager)
+  - Download from: https://nssm.cc/
+  - Configure as service for headless operation
+
+===================================================================================
+STEP 14: TROUBLESHOOTING
+===================================================================================
+
+Problem: "Cannot connect to MySQL"
+  Solution: 
+    - Verify MySQL service is running (services.msc)
+    - Check connection string password
+    - Test: mysql -u root -p
+
+Problem: "Connection refused" on zones
+  Solution:
+    - Ping Raspberry Pis: ping 192.168.1.201
+    - Verify RFID services running on Pi units
+    - Check firewall isn't blocking ports 5001-5008
+
+Problem: "Assembly not found" errors
+  Solution:
+    - Install NuGet packages (MySql.Data, Newtonsoft.Json)
+    - Rebuild solution
+
+Problem: Tags not appearing in queue
+  Solution:
+    - Check "Show Customer Queue" window is open
+    - Verify zone is connected (green status)
+    - Check database for tag_reads entries
+
+Problem: Wrong data format from Pi
+  Solution:
+    - Pi should send JSON: {"rfid_tag": "...", ...}
+    - Check ProcessTagData() method in code
+    - May need to adjust parsing logic
+
+===================================================================================
+STEP 15: DATABASE MAINTENANCE
+===================================================================================
+
+Backup Database (recommended daily):
+  mysqldump -u root -p rfid_database > backup_YYYYMMDD.sql
+
+Restore Database:
+  mysql -u root -p rfid_database < backup_YYYYMMDD.sql
+
+Clean Old Zone Reads (optional - keep database size manageable):
+  DELETE FROM tag_reads WHERE timestamp < DATE_SUB(NOW(), INTERVAL 90 DAY);
+
+View Statistics:
+  -- Total reads per zone
+  SELECT zone_name, COUNT(*) as read_count 
+  FROM tag_reads 
+  GROUP BY zone_name 
+  ORDER BY zone_number;
+
+  -- Most active customers
+  SELECT tag_id, customer_name, COUNT(*) as visits
+  FROM tag_reads tr
+  LEFT JOIN rfid_tags rt ON tr.tag_id = rt.tag_id
+  GROUP BY tag_id
+  ORDER BY visits DESC
+  LIMIT 10;
+
+===================================================================================
+STEP 16: CUSTOMIZATION OPTIONS
+===================================================================================
+
+Change Zone Colors:
+  In MainForm.cs InitializeZones() method, modify:
+  Color = Color.YourColorName
+
+Add More Zones:
+  1. Add new Raspberry Pi entry in InitializeZones()
+  2. Increment ZoneNumber
+  3. Update zone count in status displays
+
+Change Database Password:
+  1. Update MySQL root password
+  2. Update connectionString in code
+  3. Rebuild application
+
+Modify Customer Fields:
+  1. ALTER TABLE rfid_tags ADD COLUMN your_field VARCHAR(255);
+  2. Update AddTagForm.cs to include new field
+  3. Update DisplayTagInfo() to show new field
+
+===================================================================================
+PRODUCTION CHECKLIST
+===================================================================================
+
+Before going live:
+  [ ] Remove sample data from database
+  [ ] Test all 8 zone connections
+  [ ] Verify tag detection in each zone
+  [ ] Test customer queue updates
+  [ ] Test zone history logging
+  [ ] Configure auto-start
+  [ ] Set up database backups
+  [ ] Train staff on queue management
+  [ ] Document custom procedures
+  [ ] Create backup plan for system failures
+
+===================================================================================
+SUPPORT CONTACTS
+===================================================================================
+
+System Administrator: [Your contact]
+Database Issues: [Your contact]
+Network/Pi Issues: [Your contact]
+Application Issues: [Your contact]
+
+===================================================================================
+VERSION HISTORY
+===================================================================================
+
+Version 1.0 - Multi-Zone Release
+  - 8-zone simultaneous tracking
+  - Color-coded zone visualization
+  - Customer queue with zone movement
+  - Complete zone history logging
+  - MySQL database integration
+  - Export to CSV functionality
+
+===================================================================================
+                              END OF DEPLOYMENT GUIDE
+===================================================================================

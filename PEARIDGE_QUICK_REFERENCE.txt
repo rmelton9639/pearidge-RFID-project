@@ -1,0 +1,283 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    PEA RIDGE - LOBBY COMPUTER QUICK REFERENCE                 ║
+║                         Daily Operations Guide                                ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════════════
+                              STARTING UP
+═══════════════════════════════════════════════════════════════════════════════
+
+DAILY STARTUP PROCEDURE:
+  1. Turn on lobby computer
+  2. Application should auto-start (if configured)
+     OR: Double-click "RFIDLookupApp" icon on desktop
+  3. Click "🔌 Connect All Zones" button
+  4. Verify all 8 zones show "Connected ✓" (green)
+  5. Click "📋 Show Customer Queue" button
+
+WHAT YOU SHOULD SEE:
+  ✓ Main window: 8 zones listed, all showing green "Connected ✓"
+  ✓ Status: "8/8 Zones Connected ✓ All Systems Online" (in green)
+  ✓ Customer Queue window opens and stays on screen
+
+═══════════════════════════════════════════════════════════════════════════════
+                            ZONE COLOR LEGEND
+═══════════════════════════════════════════════════════════════════════════════
+
+🟦 Zone 1: Bathing            (Light Blue)
+🟥 Zone 2: Drying             (Light Coral)
+🟩 Zone 3: Grooming Room 1    (Light Green)
+🟨 Zone 4: Grooming Room 2    (Light Yellow)
+🟪 Zone 5: Entryway           (Purple/Plum)
+🟧 Zone 6: Waiting Kennels    (Peach)
+🟦 Zone 7: Play Yard          (Light Cyan)
+🟧 Zone 8: Pickup Kennel      (Light Salmon)
+
+═══════════════════════════════════════════════════════════════════════════════
+                          CUSTOMER QUEUE WINDOW
+═══════════════════════════════════════════════════════════════════════════════
+
+WHEN A CUSTOMER ARRIVES:
+  1. 🔔 You'll hear a "DING" sound
+  2. 📱 Popup appears showing customer info and zone
+  3. 📋 Customer automatically added to queue
+  4. 🎨 Queue shows customer with color-coded current zone
+
+QUEUE INFORMATION DISPLAYED:
+  • Time - When customer first arrived
+  • Current Zone - Where dog is right now (color-coded!)
+  • Customer Name
+  • Dog Name
+  • Dog Breed
+  • Vehicle - Make and color for pickup
+  • Notes - Special instructions
+  • Zone History - Number of zones visited
+
+CUSTOMER MOVES BETWEEN ZONES:
+  • Queue updates automatically
+  • "Current Zone" column changes color
+  • Row flashes yellow briefly to catch your attention
+  • Zone History count increases
+
+═══════════════════════════════════════════════════════════════════════════════
+                        MANAGING THE CUSTOMER QUEUE
+═══════════════════════════════════════════════════════════════════════════════
+
+TO REMOVE A CUSTOMER (When picked up):
+  Method 1: Double-click on customer row
+  Method 2: Click customer row, press DELETE key
+  Method 3: Right-click customer → "Remove from Queue"
+
+TO REMOVE ALL CUSTOMERS:
+  Click "🗑️ Clear All Customers" button at bottom
+  (Confirms before clearing)
+
+TO VIEW ZONE HISTORY FOR A CUSTOMER:
+  Right-click customer row → "View Zone History"
+  Shows all zones visited with timestamps
+
+═══════════════════════════════════════════════════════════════════════════════
+                          TYPICAL DOG WORKFLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+Morning Drop-off:
+  1. 🟪 Zone 5: Entryway - Customer arrives
+  2. 🟧 Zone 6: Waiting Kennels - Dog waits for grooming slot
+
+Grooming Process:
+  3. 🟦 Zone 1: Bathing - Dog gets bath
+  4. 🟥 Zone 2: Drying - Dog dries off
+  5. 🟩 Zone 3 or 🟨 Zone 4: Grooming - Haircut and styling
+
+Optional Play Time:
+  6. 🟦 Zone 7: Play Yard - If waiting for pickup
+
+Pickup:
+  7. 🟧 Zone 8: Pickup Kennel - Ready for customer
+  8. 🟪 Zone 5: Entryway - Customer picks up
+
+═══════════════════════════════════════════════════════════════════════════════
+                            MAIN WINDOW FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+CONNECTION STATUS:
+  Green "Connected ✓" = Zone working normally
+  Yellow "Connecting..." = Zone connecting
+  Red "Disconnected" or "Failed" = Problem (see troubleshooting)
+
+STATISTICS PANEL:
+  • Connected Zones: Should show "8/8" in green
+  • Total Tags Read Today: Cumulative count
+  • Active Customers: Current customers in queue
+  • Last Read: Most recent tag detection
+
+CONTROL BUTTONS:
+  📋 Show Customer Queue - Opens queue window
+  📊 View Customer Database - See all registered customers
+  📍 View Zone History - Complete read history
+  ➕ Add Tag - Register new customer
+  ⬇️ Minimize - Hide to system tray
+
+═══════════════════════════════════════════════════════════════════════════════
+                         ADDING A NEW CUSTOMER
+═══════════════════════════════════════════════════════════════════════════════
+
+WHEN: Unknown tag detected (popup shows "Tag Not Found")
+
+STEPS:
+  1. Note the Tag ID from the popup
+  2. Click "➕ Add Tag" button on main window
+  3. Fill in form:
+     • Tag ID: (should match from popup)
+     • Customer Name: John Smith
+     • Dog's Name: Buddy
+     • Dog's Breed: Golden Retriever
+     • Vehicle Make/Color: Black Toyota Camry
+     • Notes: Any special instructions
+  4. Click "💾 Save"
+  5. Done! Next time tag is detected, customer info will appear
+
+═══════════════════════════════════════════════════════════════════════════════
+                        VIEWING ZONE HISTORY
+═══════════════════════════════════════════════════════════════════════════════
+
+FROM MAIN WINDOW:
+  Click "📍 View Zone History" button
+
+FEATURES:
+  • See all tag reads from all zones
+  • Filter by specific zone (dropdown menu)
+  • Filter by date range (From/To dates)
+  • Export to CSV (for Excel analysis)
+  • Color-coded by zone
+
+USEFUL FOR:
+  • Finding when a dog was in specific zone
+  • Tracking how long dogs spend in each area
+  • Generating reports for management
+  • Troubleshooting if customer disputes timeline
+
+═══════════════════════════════════════════════════════════════════════════════
+                         COMMON DAILY TASKS
+═══════════════════════════════════════════════════════════════════════════════
+
+CHECKING ON A DOG:
+  1. Look at Customer Queue window
+  2. Find customer/dog name in list
+  3. Check "Current Zone" column to see location
+
+CUSTOMER CALLS ASKING "IS MY DOG READY?":
+  1. Find in Customer Queue
+  2. If in Zone 8 (Pickup Kennel - Light Salmon) → "Yes, ready!"
+  3. If in Zone 7 (Play Yard - Light Cyan) → "Almost ready, in play area"
+  4. Other zones → "Still being groomed, in [zone name]"
+
+END OF DAY CLEANUP:
+  1. Verify all customers picked up (queue should be empty)
+  2. If any remain, contact those customers
+  3. Optional: Click "🗑️ Clear All Customers"
+  4. Close application (or minimize to tray overnight)
+
+═══════════════════════════════════════════════════════════════════════════════
+                            TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+PROBLEM: Zone shows "Disconnected" (red)
+  FIX 1: Click "❌ Disconnect All", then "🔌 Connect All Zones"
+  FIX 2: Check if Raspberry Pi is on (check with grooming staff)
+  FIX 3: Call IT support
+
+PROBLEM: No "ding" sound when tag detected
+  FIX: Check computer volume/speakers
+       Tags still work, just no sound alert
+
+PROBLEM: Customer in queue but already picked up
+  FIX: Double-click customer row to remove them
+
+PROBLEM: Tag detected but no customer info
+  FIX: Add the customer (see "Adding a New Customer" above)
+
+PROBLEM: Application won't start
+  FIX 1: Restart computer
+  FIX 2: Check with IT - may need to restart MySQL service
+
+PROBLEM: Queue window disappeared
+  FIX: Click "📋 Show Customer Queue" on main window
+
+PROBLEM: Zone colors not showing
+  FIX: Close and reopen Customer Queue window
+
+═══════════════════════════════════════════════════════════════════════════════
+                         EMERGENCY PROCEDURES
+═══════════════════════════════════════════════════════════════════════════════
+
+IF SYSTEM COMPLETELY DOWN:
+  1. Restart lobby computer
+  2. If still not working, use manual paper log
+  3. Call IT support: [Phone Number]
+  4. Record customers manually until system restored
+
+IF DATABASE ERROR APPEARS:
+  1. Take screenshot of error
+  2. Try restarting application
+  3. If persists, call IT immediately
+  4. Continue operations manually with paper
+
+IF ZONES NOT DETECTING TAGS:
+  1. Check if grooming staff reports RFID working on their end
+  2. If yes, problem is network - call IT
+  3. If no, problem is RFID hardware - contact hardware tech
+
+═══════════════════════════════════════════════════════════════════════════════
+                           BEST PRACTICES
+═══════════════════════════════════════════════════════════════════════════════
+
+DO:
+  ✓ Keep Customer Queue window visible all day
+  ✓ Remove customers from queue when they leave
+  ✓ Add new customers immediately when unknown tag appears
+  ✓ Check zone status lights periodically (should all be green)
+  ✓ Note vehicle information accurately for easy pickup
+
+DON'T:
+  ✗ Close the application during business hours
+  ✗ Clear entire queue unless end of day
+  ✗ Ignore error messages - report them
+  ✗ Delete customers from database (only remove from queue)
+
+═══════════════════════════════════════════════════════════════════════════════
+                        HELPFUL KEYBOARD SHORTCUTS
+═══════════════════════════════════════════════════════════════════════════════
+
+In Customer Queue Window:
+  DELETE key - Remove selected customer
+  F5 - Refresh display
+  
+Right-Click Menu Options:
+  • View Zone History - See where customer has been
+  • Remove from Queue - Same as double-click
+
+═══════════════════════════════════════════════════════════════════════════════
+                            SUPPORT CONTACTS
+═══════════════════════════════════════════════════════════════════════════════
+
+Application Issues: [Contact Name] - [Phone]
+Network/Hardware: [Contact Name] - [Phone]  
+Database Problems: [Contact Name] - [Phone]
+After Hours Emergency: [Contact Name] - [Phone]
+
+═══════════════════════════════════════════════════════════════════════════════
+                           REMEMBER
+═══════════════════════════════════════════════════════════════════════════════
+
+• System tracks dogs automatically - you just monitor
+• Colors match zones - quick visual reference
+• Ding = new customer detected
+• Double-click = remove from queue
+• All 8 zones should be GREEN when working properly
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                    📞 Questions? Call IT Support!
+                    
+═══════════════════════════════════════════════════════════════════════════════
