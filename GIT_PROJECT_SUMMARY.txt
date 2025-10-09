@@ -77,7 +77,7 @@ Total Project Size: ~5,099 lines
 
 Commit: 28e9e7b
 Date: 2025-10-08
-Author: Pea Ridge Dev Team <dev@pearidge.com>
+Author: Pea Ridge Dev Team <rmelton9639@gmail.com>
 
 Message:
   Initial commit: Pea Ridge RFID Multi-Zone Tracking System v1.0.0
@@ -149,7 +149,7 @@ PUSH TO GITHUB:
    • Don't initialize with README (we have one)
 
 2. Add remote and push:
-   git remote add origin https://github.com/YOUR_USERNAME/pearidge-RFID-project.git
+   git remote add origin https://github.com/rmelton9639/pearidge-RFID-project.git
    git push -u origin main
 
 3. Verify on GitHub:
@@ -358,7 +358,7 @@ Total Lines: 5,099+
                          SUCCESS! 🎉
 ═══════════════════════════════════════════════════════════════════════════════
 
-Your Pea Ridge RFID project is now a professional Git repository!
+Pea Ridge RFID project is now a professional Git repository!
 
 ✅ All code organized and committed
 ✅ Comprehensive documentation included
