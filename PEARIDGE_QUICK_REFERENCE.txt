@@ -261,9 +261,9 @@ Right-Click Menu Options:
                             SUPPORT CONTACTS
 ═══════════════════════════════════════════════════════════════════════════════
 
-Application Issues: [Contact Name] - [Phone]
-Network/Hardware: [Contact Name] - [Phone]  
-Database Problems: [Contact Name] - [Phone]
+Application Issues: [Scott Melton] - [rmelton9639@gmail.com]
+Network/Hardware: [Scott Melton] - [ariceageinc@gmail.com]  
+Database Problems: [Scott Melton] - [ariceageinc@gmail.com]
 After Hours Emergency: [Contact Name] - [Phone]
 
 ═══════════════════════════════════════════════════════════════════════════════
